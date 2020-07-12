@@ -6,22 +6,26 @@ import android.support.design.widget.FloatingActionButton;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.pedrogrilo.random_tvshows_movies.Logic.Request.RequestVideo;
+import com.pedrogrilo.random_tvshows_movies.Logic.Youtube.YoutubeConfigClass;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class details_tv_shows extends YouTubeBaseActivity {
+public class Details_movies extends YouTubeBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_tv_shows);
+        setContentView(R.layout.activity_details_movies);
         FloatingActionButton returnB = findViewById(R.id.floatingActionButton);
         returnB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,21 +33,17 @@ public class details_tv_shows extends YouTubeBaseActivity {
                 finish();
             }
         });
-
-        final Button btnPlay = findViewById(R.id.buttonPlayTvShow);
-        final YouTubePlayerView mYouTubePlayerView = findViewById(R.id.youtubeViewTvShow);
-        final ProgressBar progressBar = findViewById(R.id.progressBar2);
-
-        TextView title = findViewById(R.id.title);
-        TextView overview = findViewById(R.id.overview_s);
-        TextView n_episodes = findViewById(R.id.n_episodes);
-        TextView n_seasons = findViewById(R.id.n_seasons);
-        TextView status = findViewById(R.id.status);
-        TextView overview_tv = findViewById(R.id.overview_s);
-        overview_tv.setMovementMethod(new ScrollingMovementMethod());
-
+        final Button btnPlay = findViewById(R.id.buttonPlay);
+        final YouTubePlayerView mYouTubePlayerView = findViewById(R.id.youtubeView);
+        TextView title = findViewById(R.id.title_m);
+        TextView overview_m = findViewById(R.id.overview_m);
+        overview_m.setMovementMethod(new ScrollingMovementMethod());
+        TextView release_date = findViewById(R.id.release_date);
+        TextView genres = findViewById(R.id.genres);
+        ImageView adult = findViewById(R.id.adult);
         Bundle extras = getIntent().getExtras();
         String value = null;
+        final ProgressBar progressBar = findViewById(R.id.progressBar);
 
         if (extras != null)
             value = extras.getString("JSON");
@@ -67,18 +67,49 @@ public class details_tv_shows extends YouTubeBaseActivity {
                 }
             }, 2000);
 
-            title.setText(json.getString("name"));
-            overview.setText(json.getString("overview"));
-            n_episodes.setText(json.getString("number_of_episodes"));
-            n_seasons.setText(json.getString("number_of_seasons"));
-            status.setText(json.getString("status"));
+
+            title.setText(json.getString("title"));
+            overview_m.setText(json.getString("overview"));
+            release_date.setText(json.getString("release_date"));
+            genres.setText(getGenres(json.getJSONArray("genres")));
+
+            if (json.getString("adult").equals("true"))
+                adult.setVisibility(View.VISIBLE);
+            else
+                adult.setVisibility(View.INVISIBLE);
+
 
         } catch (JSONException e) {
+            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+
+
     }
+
     private void makeView(YouTubePlayerView mYouTubePlayerView, Button btnPlay, String getKeyMovie) {
         new YoutubeConfigClass(mYouTubePlayerView, btnPlay, getKeyMovie);
+    }
+
+    private String getGenres(JSONArray genres) {
+
+        String genreString = "";
+        String continueString = ", ";
+
+        for (int i = 0; i < genres.length(); i++) {
+
+            if (i == genres.length() - 1)
+                continueString = ".";
+
+            try {
+                genreString += genres.getJSONObject(i).getString("name") + continueString;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return genreString;
     }
 
 

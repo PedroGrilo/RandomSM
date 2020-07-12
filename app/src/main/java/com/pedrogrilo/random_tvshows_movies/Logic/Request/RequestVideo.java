@@ -1,4 +1,4 @@
-package com.pedrogrilo.random_tvshows_movies;
+package com.pedrogrilo.random_tvshows_movies.Logic.Request;
 
 
 import com.google.android.youtube.player.YouTubeBaseActivity;

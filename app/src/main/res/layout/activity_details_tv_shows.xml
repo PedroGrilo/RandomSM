@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".details_tv_shows">
+    tools:context=".Details_tv_shows">
 
     <ProgressBar
         android:id="@+id/progressBar2"

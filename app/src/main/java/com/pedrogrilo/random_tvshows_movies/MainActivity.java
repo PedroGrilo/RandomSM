@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = null;
                 if (movies)
-                    i = new Intent(MainActivity.this, details_movies.class);
+                    i = new Intent(MainActivity.this, Details_movies.class);
                 else
-                    i = new Intent(MainActivity.this, details_tv_shows.class);
+                    i = new Intent(MainActivity.this, Details_tv_shows.class);
 
                 i.putExtra("JSON", json);
                 startActivity(i);

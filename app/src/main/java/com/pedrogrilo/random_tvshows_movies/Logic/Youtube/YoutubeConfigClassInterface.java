@@ -1,4 +1,4 @@
-package com.pedrogrilo.random_tvshows_movies;
+package com.pedrogrilo.random_tvshows_movies.Logic.Youtube;
 
 import android.widget.Button;
 
